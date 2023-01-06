@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
 import axios from 'axios';
 
@@ -10,9 +10,12 @@ const getPopularMovies = async () => {
 const App = () => {
   const [movie, setMovie] = useState('');
 
-  getPopularMovies().then(movies => {
-    setMovie(movies[0]);
-  });
+  useEffect(() =>
+  {
+    getPopularMovies().then(movies => {
+      setMovie(movies[0]);
+    });
+  }, []);
 
   return (
     <View
