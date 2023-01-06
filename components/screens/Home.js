@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {Text, View, StyleSheet, Dimensions, FlatList} from 'react-native';
 import {getPopularMovies, getUpcomingMovies} from '../../services/services';
 import {SliderBox} from 'react-native-image-slider-box';
+import List from '../List';
 
 const dimensions = Dimensions.get('screen');
 
@@ -49,12 +50,9 @@ const Home = () => {
           circleLoop={true}
         />
       </View>
+      <View style={styles.carousel}></View>
       <View style={styles.carousel}>
-        <FlatList
-          data={popularMovies}
-          renderItem={({item}) => <Text>{item.title}</Text>}
-          horizontal={true}
-        />
+        <List title="My List Component Title" content={popularMovies}></List>
       </View>
     </React.Fragment>
   );
