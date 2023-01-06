@@ -1,19 +1,32 @@
 import React, {useEffect, useState} from 'react';
 import {Text, View} from 'react-native';
-import {getPopularMovies} from '../../services/services';
+import {getPopularMovies, getUpcomingMovies} from '../../services/services';
+import {SliderBox} from 'react-native-image-slider-box';
 
 const Home = () => {
-  const [movie, setMovie] = useState('');
+  const [movieImages, setMovieImages] = useState('');
   const [error, setError] = useState(false);
 
   // Use useEffect() in order to make sure getPopularMovies doesnt
   // fire in a loop. The second parameter can me set in milliseconds for repeating
   // [] means fire only once
   useEffect(() => {
-    getPopularMovies()
+    getUpcomingMovies()
       .then(movies => {
-        setMovie(movies[0]);
+        const movieImagesArry = [];
+        movies.forEach(element => {
+          movieImagesArry.push(
+            'https://image.tmdb.org/t/p/w500' + element.poster_path,
+          );
+        });
+
+        setMovieImages(movieImagesArry);
       })
+      .catch(err => {
+        setError(err);
+      });
+    getPopularMovies()
+      .then(movies => {})
       .catch(err => {
         setError(err);
       });
@@ -26,12 +39,7 @@ const Home = () => {
         justifyContent: 'center',
         alignItems: 'center',
       }}>
-      <Text>Movie Title: {movie.original_title}</Text>
-      <Text>Language: {movie.original_language}</Text>
-      <Text>Release: {movie.release_date}</Text>
-
-      {/* The following statement displays the text only if error exists. */}
-      {error && <Text style={{color: 'red'}}>Error on the Server</Text>}
+      <SliderBox images={movieImages} />
     </View>
   );
 };
