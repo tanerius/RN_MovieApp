@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Text, View, StyleSheet, Dimensions} from 'react-native';
+import {Text, View, StyleSheet, Dimensions, FlatList} from 'react-native';
 import {getPopularMovies, getUpcomingMovies} from '../../services/services';
 import {SliderBox} from 'react-native-image-slider-box';
 
@@ -7,6 +7,7 @@ const dimensions = Dimensions.get('screen');
 
 const Home = () => {
   const [movieImages, setMovieImages] = useState('');
+  const [popularMovies, setPopularMovies] = useState('');
   const [error, setError] = useState(false);
 
   // Use useEffect() in order to make sure getPopularMovies doesnt
@@ -28,7 +29,9 @@ const Home = () => {
         setError(err);
       });
     getPopularMovies()
-      .then(movies => {})
+      .then(movies => {
+        setPopularMovies(movies);
+      })
       .catch(err => {
         setError(err);
       });
@@ -36,15 +39,24 @@ const Home = () => {
 
   return (
     //  styles for megamaxs1234/react-native-image-slider-box
-    <View style={styles.sliderContainer}>
-      <SliderBox
-        images={movieImages}
-        dotStyle={styles.sliderDotStyle}
-        sliderBoxHeight={dimensions.height / 1.5}
-        autoplay={true}
-        circleLoop={true}
-      />
-    </View>
+    <React.Fragment>
+      <View style={styles.sliderContainer}>
+        <SliderBox
+          images={movieImages}
+          dotStyle={styles.sliderDotStyle}
+          sliderBoxHeight={dimensions.height / 1.5}
+          autoplay={true}
+          circleLoop={true}
+        />
+      </View>
+      <View style={styles.carousel}>
+        <FlatList
+          data={popularMovies}
+          renderItem={({item}) => <Text>{item.title}</Text>}
+          horizontal={true}
+        />
+      </View>
+    </React.Fragment>
   );
 };
 
@@ -56,6 +68,11 @@ const styles = StyleSheet.create({
   },
   sliderDotStyle: {
     height: 0,
+  },
+  carousel: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 
