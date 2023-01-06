@@ -1,11 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
-import axios from 'axios';
-
-const getPopularMovies = async () => {
-  const resp = await axios.get('https://api.themoviedb.org/3/movie/popular?api_key=e8803fd650b9dcddeacdf02c96d43030');
-  return resp.data.results;
-}
+import { getPopularMovies } from './services/services';
 
 const App = () => {
   const [movie, setMovie] = useState('');
