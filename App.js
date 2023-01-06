@@ -9,7 +9,7 @@ const getPopularMovies = async () => {
 
 const App = () => {
   const [movie, setMovie] = useState('');
-  const [error, setError] = useState('');
+  const [error, setError] = useState(false);
 
   // Use useEffect() in order to make sure getPopularMovies doesnt 
   // fire in a loop. The second parameter can me set in milliseconds for repeating
