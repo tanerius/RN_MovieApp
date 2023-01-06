@@ -1,7 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import {Text, View} from 'react-native';
+import {Text, View, StyleSheet, Dimensions} from 'react-native';
 import {getPopularMovies, getUpcomingMovies} from '../../services/services';
 import {SliderBox} from 'react-native-image-slider-box';
+
+const dimensions = Dimensions.get('screen');
 
 const Home = () => {
   const [movieImages, setMovieImages] = useState('');
@@ -33,15 +35,28 @@ const Home = () => {
   }, []);
 
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}>
-      <SliderBox images={movieImages} />
+    //  styles for megamaxs1234/react-native-image-slider-box
+    <View style={styles.sliderContainer}>
+      <SliderBox
+        images={movieImages}
+        dotStyle={styles.sliderDotStyle}
+        sliderBoxHeight={dimensions.height / 1.5}
+        autoplay={true}
+        circleLoop={true}
+      />
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  sliderContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  sliderDotStyle: {
+    height: 0,
+  },
+});
 
 export default Home;
