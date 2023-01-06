@@ -9,11 +9,16 @@ const getPopularMovies = async () => {
 
 const App = () => {
   const [movie, setMovie] = useState('');
+  const [error, setError] = useState('');
 
   useEffect(() =>
   {
-    getPopularMovies().then(movies => {
+    getPopularMovies()
+    .then(movies => {
       setMovie(movies[0]);
+    })
+    .catch(err => {
+      setError(err);
     });
   }, []);
 
@@ -21,12 +26,13 @@ const App = () => {
     <View
       style={{
         flex: 1,
-        justifyContent: "center",
-        alignItems: "center"
+        justifyContent: 'center',
+        alignItems: 'center'
       }}>
       <Text>Movie Title: {movie.original_title}</Text>
       <Text>Language: {movie.original_language}</Text>
       <Text>Release: {movie.release_date}</Text>
+      {error && <Text style={{color: 'red'}}>Error on the Server</Text>}
     </View>
   )
 }
