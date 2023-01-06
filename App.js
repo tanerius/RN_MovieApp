@@ -11,6 +11,9 @@ const App = () => {
   const [movie, setMovie] = useState('');
   const [error, setError] = useState('');
 
+  // Use useEffect() in order to make sure getPopularMovies doesnt 
+  // fire in a loop. The second parameter can me set in milliseconds for repeating
+  // [] means fire only once
   useEffect(() =>
   {
     getPopularMovies()
@@ -32,6 +35,8 @@ const App = () => {
       <Text>Movie Title: {movie.original_title}</Text>
       <Text>Language: {movie.original_language}</Text>
       <Text>Release: {movie.release_date}</Text>
+
+      {/* The following statement displays the text only if error exists. */}
       {error && <Text style={{color: 'red'}}>Error on the Server</Text>}
     </View>
   )
