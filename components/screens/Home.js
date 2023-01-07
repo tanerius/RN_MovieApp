@@ -18,40 +18,31 @@ const Home = () => {
   const [familiyMovies, setFamiliyMovies] = useState('');
   const [error, setError] = useState(false);
 
+  const getData = () => {
+    return Promise.all([
+      getUpcomingMovies(),
+      getPopularMovies(),
+      getPopularTv(),
+      getFamilyMovies(),
+    ]);
+  };
+
   // Use useEffect() in order to make sure getPopularMovies doesnt
   // fire in a loop. The second parameter can me set in milliseconds for repeating
   // [] means fire only once
   useEffect(() => {
-    getUpcomingMovies()
-      .then(movies => {
+    getData()
+      .then(([upcomingMovies, popular, tvShows, family]) => {
         const movieImagesArry = [];
-        movies.forEach(element => {
+        upcomingMovies.forEach(element => {
           movieImagesArry.push(
             'https://image.tmdb.org/t/p/w500' + element.poster_path,
           );
         });
         setMovieImages(movieImagesArry);
-      })
-      .catch(err => {
-        setError(err);
-      });
-    getPopularMovies()
-      .then(movies => {
-        setPopularMovies(movies);
-      })
-      .catch(err => {
-        setError(err);
-      });
-    getPopularTv()
-      .then(movies => {
-        setpopularShows(movies);
-      })
-      .catch(err => {
-        setError(err);
-      });
-    getFamilyMovies()
-      .then(movies => {
-        setFamiliyMovies(movies);
+        setPopularMovies(popular);
+        setpopularShows(tvShows);
+        setFamiliyMovies(family);
       })
       .catch(err => {
         setError(err);
@@ -62,24 +53,32 @@ const Home = () => {
     //  styles for megamaxs1234/react-native-image-slider-box
     <React.Fragment>
       <ScrollView>
-        <View style={styles.sliderContainer}>
-          <SliderBox
-            images={movieImages}
-            dotStyle={styles.sliderDotStyle}
-            sliderBoxHeight={dimensions.height / 1.5}
-            autoplay={true}
-            circleLoop={true}
-          />
-        </View>
-        <View style={styles.carousel}>
-          <List title="Popular Movies" content={popularMovies}></List>
-        </View>
-        <View style={styles.carousel}>
-          <List title="Popular TV Shows" content={popularShows}></List>
-        </View>
-        <View style={styles.carousel}>
-          <List title="Family Movies" content={familiyMovies}></List>
-        </View>
+        {movieImages && (
+          <View style={styles.sliderContainer}>
+            <SliderBox
+              images={movieImages}
+              dotStyle={styles.sliderDotStyle}
+              sliderBoxHeight={dimensions.height / 1.5}
+              autoplay={true}
+              circleLoop={true}
+            />
+          </View>
+        )}
+        {popularMovies && (
+          <View style={styles.carousel}>
+            <List title="Popular Movies" content={popularMovies}></List>
+          </View>
+        )}
+        {popularShows && (
+          <View style={styles.carousel}>
+            <List title="Popular TV Shows" content={popularShows}></List>
+          </View>
+        )}
+        {familiyMovies && (
+          <View style={styles.carousel}>
+            <List title="Family Movies" content={familiyMovies}></List>
+          </View>
+        )}
       </ScrollView>
     </React.Fragment>
   );
