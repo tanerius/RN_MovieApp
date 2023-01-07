@@ -1,5 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import {Text, View, StyleSheet, Dimensions, ScrollView} from 'react-native';
+import {
+  ActivityIndicator,
+  View,
+  StyleSheet,
+  Dimensions,
+  ScrollView,
+} from 'react-native';
 import {
   getPopularMovies,
   getUpcomingMovies,
@@ -16,6 +22,7 @@ const Home = () => {
   const [popularMovies, setPopularMovies] = useState('');
   const [popularShows, setpopularShows] = useState('');
   const [familiyMovies, setFamiliyMovies] = useState('');
+  const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState(false);
 
   const getData = () => {
@@ -46,40 +53,47 @@ const Home = () => {
       })
       .catch(err => {
         setError(err);
+      })
+      .finally(() => {
+        setLoaded(true);
       });
   }, []);
 
   return (
     //  styles for megamaxs1234/react-native-image-slider-box
     <React.Fragment>
-      <ScrollView>
-        {movieImages && (
-          <View style={styles.sliderContainer}>
-            <SliderBox
-              images={movieImages}
-              dotStyle={styles.sliderDotStyle}
-              sliderBoxHeight={dimensions.height / 1.5}
-              autoplay={true}
-              circleLoop={true}
-            />
-          </View>
-        )}
-        {popularMovies && (
-          <View style={styles.carousel}>
-            <List title="Popular Movies" content={popularMovies}></List>
-          </View>
-        )}
-        {popularShows && (
-          <View style={styles.carousel}>
-            <List title="Popular TV Shows" content={popularShows}></List>
-          </View>
-        )}
-        {familiyMovies && (
-          <View style={styles.carousel}>
-            <List title="Family Movies" content={familiyMovies}></List>
-          </View>
-        )}
-      </ScrollView>
+      {loaded ? (
+        <ScrollView>
+          {movieImages && (
+            <View style={styles.sliderContainer}>
+              <SliderBox
+                images={movieImages}
+                dotStyle={styles.sliderDotStyle}
+                sliderBoxHeight={dimensions.height / 1.5}
+                autoplay={true}
+                circleLoop={true}
+              />
+            </View>
+          )}
+          {popularMovies && (
+            <View style={styles.carousel}>
+              <List title="Popular Movies" content={popularMovies}></List>
+            </View>
+          )}
+          {popularShows && (
+            <View style={styles.carousel}>
+              <List title="Popular TV Shows" content={popularShows}></List>
+            </View>
+          )}
+          {familiyMovies && (
+            <View style={styles.carousel}>
+              <List title="Family Movies" content={familiyMovies}></List>
+            </View>
+          )}
+        </ScrollView>
+      ) : (
+        <ActivityIndicator size="large" color="#ff0000" />
+      )}
     </React.Fragment>
   );
 };
