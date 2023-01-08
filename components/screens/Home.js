@@ -14,6 +14,7 @@ import {
 } from '../../services/services';
 import {SliderBox} from 'react-native-image-slider-box';
 import List from '../List';
+import Error from '../Error';
 
 const dimensions = Dimensions.get('screen');
 
@@ -38,6 +39,7 @@ const Home = () => {
   // fire in a loop. The second parameter can me set in milliseconds for repeating
   // [] means fire only once
   useEffect(() => {
+    setError(false);
     getData()
       .then(([upcomingMovies, popular, tvShows, family]) => {
         const movieImagesArry = [];
@@ -52,7 +54,7 @@ const Home = () => {
         setFamiliyMovies(family);
       })
       .catch(err => {
-        setError(err);
+        setError(true);
       })
       .finally(() => {
         setLoaded(true);
@@ -94,6 +96,7 @@ const Home = () => {
       ) : (
         <ActivityIndicator size="large" color="#ff0000" />
       )}
+      {error && <Error />}
     </React.Fragment>
   );
 };
