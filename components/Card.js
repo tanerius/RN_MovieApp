@@ -4,13 +4,16 @@ import PropTypes from 'prop-types';
 
 const placeholderImage = require('../assets/placeholder.jpg');
 const propTypes = {
+  navigation: PropTypes.object,
   item: PropTypes.object,
 };
 class Card extends React.PureComponent {
   render() {
-    const {item} = this.props;
+    const {navigation, item} = this.props;
     return (
-      <TouchableOpacity style={styles.touchableComp}>
+      <TouchableOpacity
+        onPress={() => navigation.navigate('Detail')}
+        style={styles.touchableComp}>
         <Image
           style={styles.movieImage}
           source={
