@@ -14,6 +14,7 @@ import {getMovie} from '../../services/services';
 import StarRating from 'react-native-star-rating-widget';
 import dateFormat, {masks} from 'dateformat';
 import PlayButton from '../PlayButton';
+import VideoPlayer from 'react-native-video-controls';
 
 const placeholderImage = require('../../assets/placeholder.jpg');
 const height = Dimensions.get('screen').height;
@@ -82,9 +83,13 @@ const Detail = ({route, navigation}) => {
           </ScrollView>
           <Modal animationType="slide" visible={modalVisible}>
             <View style={styles.videoModal}>
-              <Pressable onPress={() => playVideo()}>
-                <Text>{'Hide Modal'}</Text>
-              </Pressable>
+              <VideoPlayer
+                source={{uri: 'https://vjs.zencdn.net/v/oceans.mp4'}}
+                navigator={navigation}
+                onBack={() => {
+                  playVideo();
+                }}
+              />
             </View>
           </Modal>
         </View>
