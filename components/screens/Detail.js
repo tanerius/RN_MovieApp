@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {
+  Modal,
   ScrollView,
   StyleSheet,
   Image,
@@ -7,6 +8,7 @@ import {
   ActivityIndicator,
   Text,
   View,
+  Pressable,
 } from 'react-native';
 import {getMovie} from '../../services/services';
 import StarRating from 'react-native-star-rating-widget';
@@ -20,6 +22,7 @@ const Detail = ({route, navigation}) => {
   const movieId = route.params.movieId;
   const [movieDetail, setMovieDetail] = useState();
   const [loaded, setLoaded] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
     getMovie(movieId).then(movieData => {
@@ -28,50 +31,63 @@ const Detail = ({route, navigation}) => {
     });
   }, [movieId]);
 
+  const playVideo = () => {
+    setModalVisible(!modalVisible);
+  };
+
   return (
     <React.Fragment>
       {loaded && (
-        <ScrollView>
-          <Image
-            style={styles.movieImage}
-            source={
-              movieDetail.poster_path
-                ? {
-                    uri:
-                      'https://image.tmdb.org/t/p/w500' +
-                      movieDetail.poster_path,
-                  }
-                : placeholderImage
-            }></Image>
-          <View style={styles.container}>
-            <View style={styles.playButton}>
-              <PlayButton></PlayButton>
-            </View>
-            <Text style={styles.movieTitle}>{movieDetail.title}</Text>
-            {movieDetail.genres && (
-              <View style={styles.movieGenresContainer}>
-                {movieDetail.genres.map(genreItem => {
-                  return (
-                    <Text style={styles.movieGenreItem} key={genreItem.id}>
-                      {genreItem.name} ({genreItem.id})
-                    </Text>
-                  );
-                })}
+        <View>
+          <ScrollView>
+            <Image
+              style={styles.movieImage}
+              source={
+                movieDetail.poster_path
+                  ? {
+                      uri:
+                        'https://image.tmdb.org/t/p/w500' +
+                        movieDetail.poster_path,
+                    }
+                  : placeholderImage
+              }></Image>
+            <View style={styles.container}>
+              <View style={styles.playButton}>
+                <PlayButton handlePress={playVideo} />
               </View>
-            )}
-            <StarRating
-              onChange={number => {}}
-              rating={movieDetail.vote_average / 2}
-            />
-            <Text style={styles.overview}>
-              Overview: {movieDetail.overview}
-            </Text>
-            <Text style={styles.releaseDate}>
-              Release date:{' '}
-              {dateFormat(movieDetail.release_date, 'mmmm dS, yyyy')}
-            </Text>
-          </View>
-        </ScrollView>
+              <Text style={styles.movieTitle}>{movieDetail.title}</Text>
+              {movieDetail.genres && (
+                <View style={styles.movieGenresContainer}>
+                  {movieDetail.genres.map(genreItem => {
+                    return (
+                      <Text style={styles.movieGenreItem} key={genreItem.id}>
+                        {genreItem.name} ({genreItem.id})
+                      </Text>
+                    );
+                  })}
+                </View>
+              )}
+              <StarRating
+                onChange={number => {}}
+                rating={movieDetail.vote_average / 2}
+              />
+              <Text style={styles.overview}>
+                Overview: {movieDetail.overview}
+              </Text>
+              <Text style={styles.releaseDate}>
+                Release date:{' '}
+                {dateFormat(movieDetail.release_date, 'mmmm dS, yyyy')}
+              </Text>
+            </View>
+          </ScrollView>
+          <Modal animationType="slide" visible={modalVisible}>
+            <View style={styles.videoModal}>
+              <Pressable onPress={() => playVideo()}>
+                <Text>{'Hide Modal'}</Text>
+              </Pressable>
+            </View>
+          </Modal>
+        </View>
       )}
       {!loaded && <ActivityIndicator size="large" />}
     </React.Fragment>
@@ -114,6 +130,11 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: -40,
     right: 20,
+  },
+  videoModal: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 
