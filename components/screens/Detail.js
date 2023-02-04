@@ -9,6 +9,7 @@ import {
   View,
 } from 'react-native';
 import {getMovie} from '../../services/services';
+import StarRating from 'react-native-star-rating-widget';
 
 const placeholderImage = require('../../assets/placeholder.jpg');
 const height = Dimensions.get('screen').height;
@@ -53,6 +54,9 @@ const Detail = ({route, navigation}) => {
                 })}
               </View>
             )}
+            <StarRating
+              onChange={number => {}}
+              rating={movieDetail.vote_average / 2}></StarRating>
           </View>
         </ScrollView>
       )}
@@ -79,6 +83,8 @@ const styles = StyleSheet.create({
   movieGenresContainer: {
     flexDirection: 'row',
     alignContent: 'center',
+    marginTop: 20,
+    marginBottom: 20,
   },
   movieGenreItem: {
     marginRight: 10,
