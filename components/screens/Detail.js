@@ -11,6 +11,7 @@ import {
 import {getMovie} from '../../services/services';
 import StarRating from 'react-native-star-rating-widget';
 import dateFormat, {masks} from 'dateformat';
+import PlayButton from '../PlayButton';
 
 const placeholderImage = require('../../assets/placeholder.jpg');
 const height = Dimensions.get('screen').height;
@@ -43,6 +44,9 @@ const Detail = ({route, navigation}) => {
                 : placeholderImage
             }></Image>
           <View style={styles.container}>
+            <View style={styles.playButton}>
+              <PlayButton></PlayButton>
+            </View>
             <Text style={styles.movieTitle}>{movieDetail.title}</Text>
             {movieDetail.genres && (
               <View style={styles.movieGenresContainer}>
@@ -105,6 +109,11 @@ const styles = StyleSheet.create({
   },
   releaseDate: {
     fontWeight: 'bold',
+  },
+  playButton: {
+    position: 'absolute',
+    top: -40,
+    right: 20,
   },
 });
 
