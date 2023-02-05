@@ -15,7 +15,12 @@ const App = () => {
         <Stack.Screen
           name="Home"
           component={Home}
-          options={{headerTransparent: true}}
+          options={{
+            headerTransparent: true,
+            header: ({navigation}) => (
+              <Navbar navigation={navigation} main={true} />
+            ),
+          }}
         />
         {/* Add a details screen */}
         <Stack.Screen
@@ -23,7 +28,9 @@ const App = () => {
           component={Detail}
           options={{
             headerTransparent: true,
-            header: ({navigation}) => <Navbar navigation={navigation} />,
+            header: ({navigation}) => (
+              <Navbar navigation={navigation} main={false} />
+            ),
           }}
         />
       </Stack.Navigator>
