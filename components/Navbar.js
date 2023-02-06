@@ -25,7 +25,7 @@ class Navbar extends React.PureComponent {
             <Icon name="logo-markdown" size={50} color={'#f00'} />
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate('search');
+                navigation.navigate('Search');
               }}>
               <Icon name={'search'} size={40} color={'#fff'} />
             </TouchableOpacity>
