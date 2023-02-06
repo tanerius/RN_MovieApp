@@ -41,6 +41,7 @@ const styles = StyleSheet.create({
     position: 'relative',
     allignItems: 'center',
     height: 200,
+    marginBottom: 5,
   },
   movieImage: {
     height: 200,
